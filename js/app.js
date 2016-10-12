@@ -90,5 +90,52 @@ $(document).ready( function() {
 		// get the value of the tags the user submitted
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
+	})
+
+var getAnswerers = function(answerers){
+	var request = {
+		tagged: 
+		site:'stackoverflow'
+	};
+$.ajax({
+	url: "http://api.stackexchange.com/2.2/tags{tag}/top-answerers/all_time",
+	data: request,
+	dataType: "jsonp",
+	type: "GET",
+	})
+
+.done(function(result){ 
+		var searchResults = showSearchResults(request.tagged, result.items.length);
+
+		$('.search-results').html(searchResults);
+
+		$.each(result.items, function(i, item) {
+			var question = showQuestion(item);
+			$('.results').append(question);
+		});
+	})
+	.fail(function(jqXHR, error){ 
+		var errorElem = showError(error);
+		$('.search-results').append(errorElem);
 	});
+};
+//.done
+//.fail
+}
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
